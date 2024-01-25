@@ -1,4 +1,8 @@
-function DomManager(content, Game) {
+function DomManager(content, game) {
+    const subscribers = {
+        'menu-button': [],
+        'game-move': [], 
+    } 
 
     function loadPage(pageCreator) {
         content.innerHTML = '';
@@ -29,7 +33,6 @@ function DomManager(content, Game) {
 
     function createGame() {
         const gameHtml = document.createElement("div");
-        const game = Game();
 
         gameHtml.innerHTML = `
             <h1>Game</h1>
@@ -41,10 +44,11 @@ function DomManager(content, Game) {
         `
 
         const board = gameHtml.querySelector("#board1");
-        renderBoard(board, game.getPlayers()[0]);
+        renderBoard(board);
 
         board.addEventListener("click", (e) =>  {
-            console.log(getGamePosition(e));
+            const results = post('game-move', {position: getGamePosition(e)})
+            renderBoard(board, results[0].getBoard());
         });
 
         gameHtml.querySelector("#to-menu").addEventListener("click", () => loadPage(createMenu));
@@ -53,17 +57,19 @@ function DomManager(content, Game) {
         return gameHtml;
     }
 
-    function renderBoard(canvas, player) {
+    function renderBoard(canvas, gameboard) {
         const ctx = canvas.getContext("2d");
         const WIDTH = canvas.width
         const HEIGHT = canvas.height
 
         const cellSize = WIDTH / 10;
-        const gameboard = player.getBoard();
-    //    const attackList = gameboard.getAttacks();
+        let attackList = [{x: 1, y: 1, hit: true},{x: 9, y: 3, hit: true}, {x: 0, y: 0, hit: false} ]
+        
+        if (gameboard) {
+            attackList = gameboard.getAttacks();
+        }
 
-        const attackList = [{x: 1, y: 1, hit: true},{x: 9, y: 3, hit: true}, {x: 0, y: 0, hit: false} ]
-
+        console.log(attackList)
 
         for (let x = 0; x < 10; x++) {
         for (let y = 0; y < 10; y++) {
@@ -107,8 +113,20 @@ function DomManager(content, Game) {
         loadPage(createOptions)
     }
 
-    function subscribe() {
-        return ;
+    function subscribe(event, callback) {
+        if (subscribers[event]) {
+            subscribers[event].push(callback);
+        } else {
+            throw new Error(`Event ${event} not exist`);
+        }
+    }
+
+    function post(event, args) {
+        if (subscribers[event]) {
+            return subscribers[event].map(callback => callback(args))
+        } 
+
+        return [];
     }
 
     return {
