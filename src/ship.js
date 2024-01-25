@@ -1,6 +1,10 @@
 const shipFactory = (size) => {
     let hits = 0;
 
+    function getSize() {
+        return size;
+    }
+
     function getHits() {
         return hits;
     }
@@ -17,6 +21,7 @@ const shipFactory = (size) => {
         hit,
         isSunk,
         getHits,
+        getSize,
     }
 }
 

@@ -12,7 +12,6 @@ function renderMenu() {
     menuHtml.innerHTML = `
         <h1>menu</h1>
         <button id="to-game">game</button>
-    
     `
     menuHtml.querySelector('#to-game').addEventListener("click", () => loadPage(renderGame));
 
@@ -37,7 +36,7 @@ function renderGame() {
     gameHtml.innerHTML = `
         <h1>Game</h1>
         <div>
-            <canvas id="board1" class="board"></canvas>
+            <canvas id="board1"></canvas>
         </div>
         <button id="to-menu">Menu</button>
         <button id="to-options">Options</button>
@@ -52,5 +51,12 @@ function renderGame() {
     return gameHtml;
 }
 
+function renderBoard(canvas, player) {
+   const ctx = canvas.getContext("2d");
+   const WIDTH = canvas.width
+   const HEIGHT = canvas.height
 
-loadPage(renderMenu);
+   console.log(WIDTH, HEIGHT);
+}
+
+export {loadPage, renderMenu}
