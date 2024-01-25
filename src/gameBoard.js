@@ -8,6 +8,10 @@ const GameBoardFactory = () => {
         return [...ships];
     }
 
+    function getAttacks() {
+
+    }
+
     function createShip (ship, {x, y, horizontal}) {
         const positions = [];
         
@@ -58,13 +62,14 @@ const GameBoardFactory = () => {
 
     function receiveAttack(attackPos) {
         const hitedShip = ships.find((ship) => shipWasHited(ship, attackPos));
-        attacks.push(attackPos)
 
         if (hitedShip) {
             hitedShip.hit()
+            attacks.push({...attackPos, hit: true});
             return true;
         }
 
+        attacks.push(...{attackPos, hit: false});
         return false;
     }
 
@@ -78,6 +83,7 @@ const GameBoardFactory = () => {
 
     return {
         getShips,
+        getAttacks, 
         placeShip,
         receiveAttack,
         isGameOver,
