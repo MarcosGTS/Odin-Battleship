@@ -36,7 +36,7 @@ function renderGame() {
     gameHtml.innerHTML = `
         <h1>Game</h1>
         <div>
-            <canvas id="board1"></canvas>
+            <canvas id="board1" height="500" width="500"></canvas>
         </div>
         <button id="to-menu">Menu</button>
         <button id="to-options">Options</button>
@@ -52,11 +52,33 @@ function renderGame() {
 }
 
 function renderBoard(canvas, player) {
-   const ctx = canvas.getContext("2d");
-   const WIDTH = canvas.width
-   const HEIGHT = canvas.height
+    const ctx = canvas.getContext("2d");
+    const WIDTH = canvas.width
+    const HEIGHT = canvas.height
 
-   console.log(WIDTH, HEIGHT);
+    const cellSize = WIDTH / 10;
+    const gameboard = player.getBoard();
+//    const attackList = gameboard.getAttacks();
+
+    const attackList = [{x: 1, y: 1, hit: true},{x: 9, y: 3, hit: true}, {x: 0, y: 0, hit: false} ]
+
+
+    for (let x = 0; x < 10; x++) {
+    for (let y = 0; y < 10; y++) {
+        ctx.fillStyle = "rgb(255, 255, 255)";
+        ctx.strokeStyle = "rgb(0, 0, 0)";
+        ctx.lineWidth = 1;
+        ctx.rect(x*cellSize, y*cellSize, cellSize, cellSize);
+        ctx.stroke();
+    }}
+
+    for (const {x, y, hit} of attackList) {
+        ctx.fillStyle = (hit) ? "rgb(0, 255, 0)" : "rgb(255, 0, 0)"
+        ctx.strokeStyle = "rgb(0, 0, 0)"
+        ctx.lineWidth = 1;
+        ctx.fillRect(x*cellSize, y*cellSize, cellSize, cellSize);
+        ctx.stroke();
+    }
 }
 
 export {loadPage, renderMenu}
