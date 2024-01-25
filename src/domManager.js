@@ -45,6 +45,10 @@ function renderGame() {
     const board = gameHtml.querySelector("#board1");
     renderBoard(board, game.getPlayers()[0]);
 
+    board.addEventListener("click", (e) =>  {
+        getGamePosition(e)
+    });
+
     gameHtml.querySelector("#to-menu").addEventListener("click", () => loadPage(renderMenu));
     gameHtml.querySelector("#to-options").addEventListener("click", () => loadPage(renderOptions));
 
@@ -78,6 +82,18 @@ function renderBoard(canvas, player) {
         ctx.lineWidth = 1;
         ctx.fillRect(x*cellSize, y*cellSize, cellSize, cellSize);
         ctx.stroke();
+    }
+}
+
+function getGamePosition(event){
+    const rect = event.target.getBoundingClientRect(); 
+    const x = event.clientX - rect.x
+    const y = event.clientY - rect.y
+    const cellSize = rect.width / 10;
+
+    return {
+        x: Math.floor(x/cellSize), 
+        y: Math.floor(y/cellSize), 
     }
 }
 
