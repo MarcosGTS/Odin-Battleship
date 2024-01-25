@@ -1,3 +1,7 @@
-import { loadPage, renderMenu } from "./domManager";
+import {DomManager} from "./domManager";
+import {Game} from "./game";
 
-loadPage(renderMenu)
+const content = document.querySelector("#content");
+const domManager = DomManager(content, Game);
+
+domManager.renderMenu();
