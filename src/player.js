@@ -14,8 +14,8 @@ const Player = (name, enemyBoard) => {
         return gameboard;
     }
 
-    function makeMove(move) {
-        return gameboard.recieveAttack(move);
+    function makeMove({position}) {
+        return gameboard.receiveAttack(position);
     }
 
     function getName() {

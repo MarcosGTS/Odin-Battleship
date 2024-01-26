@@ -18,17 +18,19 @@ const Game = () => {
     user.createBoard(GameBoardFactory, shipFactory);
     ai.createBoard(GameBoardFactory, shipFactory);
 
-    function makeMove(move)  {
+    function makeMove({position})  {
         if (gameover) return;
 
         const player = queue[currentPlayer];
-        const hit = player.makeMove(move);
+        const hit = player.makeMove({position});
 
         if (hit == false) {
             currentPlayer = (currentPlayer + 1) % queue.length;
         } 
         
         gameover = player.getBoard().isGameOver();
+        
+        return queue[0];
     }
 
     function getPlayers() {

@@ -9,7 +9,7 @@ const GameBoardFactory = () => {
     }
 
     function getAttacks() {
-
+        return [...attacks];
     }
 
     function createShip (ship, {x, y, horizontal}) {
@@ -69,7 +69,7 @@ const GameBoardFactory = () => {
             return true;
         }
 
-        attacks.push(...{attackPos, hit: false});
+        attacks.push({...attackPos, hit: false});
         return false;
     }
 
